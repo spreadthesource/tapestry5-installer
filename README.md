@@ -9,8 +9,9 @@ will be started and the user will be redirected to '/'
 To use this contribution, first refer to the Maven dependency chapter to retrieve the JAR files.
 
 Once your pom.xml is configured you can start to build your installation application. Let's say we have two packages :
-* com.wooki : this is the root package of the real application
-* com.wooki.installer : this is the root package of the installation application
+
+* com.wooki: this is the root package of the real application
+* com.wooki.installer: this is the root package of the installation application
 
 ### Configure your web.xml
 
