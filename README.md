@@ -125,6 +125,16 @@ files will be aware of what has been set by the user.
 		</property>
 	</bean>
 
+### In development mode
+
+In development mode we use to provide a pre-installed application with in memory db... To directly start the 'real' application
+simple add a context-param in your web.xml file
+
+	<context-param>
+		<param-name>tapestry.production-mode</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
 ## FAQ
 
 ### What to do once the configuration process is finsihed ?
