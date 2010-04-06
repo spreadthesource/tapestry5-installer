@@ -175,9 +175,11 @@ public class TapestryDelayedFilter implements Filter
 
         // If already installed, automatically start the 'real' application
         ApplicationSettings settings = registry.getService(ApplicationSettings.class);
-        System.setProperty(InstallerConstants.INSTALLER_VERSION, settings.get(InstallerConstants.INSTALLER_VERSION));
+        System.setProperty(InstallerConstants.INSTALLER_VERSION, settings
+                .get(InstallerConstants.INSTALLER_VERSION));
         if (settings.alreadyInstalled())
         {
+            this.installed = true;
             this.start();
         }
         else
@@ -220,18 +222,18 @@ public class TapestryDelayedFilter implements Filter
 
         if (!installed)
         {
-            if (((HttpServletRequest) request).getServletPath().contains("restart"))
+            HttpServletRequest httpRequest = (HttpServletRequest) request;
+            if (httpRequest.getServletPath().equals(com.spreadthesource.tapestry.installer.InternalConstants.RESTART_URI))
             {
                 this.start();
-                ((HttpServletResponse) response).sendRedirect("/wooki/");
+                // Redirect to root path after restart
+                ((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath());
             }
             else
             {
                 try
                 {
-                    boolean handled = handler.service(
-                            (HttpServletRequest) request,
-                            (HttpServletResponse) response);
+                    boolean handled = handler.service(httpRequest, (HttpServletResponse) response);
                     return;
                 }
                 finally
