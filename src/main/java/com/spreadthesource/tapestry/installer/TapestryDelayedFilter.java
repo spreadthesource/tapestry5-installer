@@ -29,6 +29,7 @@ import org.apache.tapestry5.services.ServletApplicationInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.spreadthesource.tapestry.installer.services.ApplicationSettings;
 import com.spreadthesource.tapestry.installer.services.InstallerModule;
 
 /**
@@ -117,7 +118,7 @@ public class TapestryDelayedFilter implements Filter
             }
         }
 
-        // Init installation application 
+        // Init installation application
         config = filterConfig;
 
         ServletContext context = config.getServletContext();
@@ -172,7 +173,17 @@ public class TapestryDelayedFilter implements Filter
 
         init(registry);
 
-        appInitializer.announceStartup();
+        // If already installed, automatically start the 'real' application
+        ApplicationSettings settings = registry.getService(ApplicationSettings.class);
+        System.setProperty(InstallerConstants.INSTALLER_VERSION, settings.get(InstallerConstants.INSTALLER_VERSION));
+        if (settings.alreadyInstalled())
+        {
+            this.start();
+        }
+        else
+        {
+            appInitializer.announceStartup();
+        }
     }
 
     protected final FilterConfig getFilterConfig()

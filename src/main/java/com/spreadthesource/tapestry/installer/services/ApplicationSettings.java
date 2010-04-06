@@ -5,7 +5,7 @@ import org.apache.tapestry5.ioc.services.SymbolProvider;
 /**
  * This service is responsible to get all the parameters during the installation process and write
  * it to the file system once the application process is finished.
- *
+ * 
  * @author ccordenier
  */
 public interface ApplicationSettings extends SymbolProvider
@@ -26,6 +26,14 @@ public interface ApplicationSettings extends SymbolProvider
      * @return
      */
     String get(String key);
+
+    /**
+     * Verify if the corresponding exists in the application settings.
+     * 
+     * @param key
+     * @return
+     */
+    boolean containsKey(String key);
 
     /**
      * Return true if the current version of the installer application version corresponds to the

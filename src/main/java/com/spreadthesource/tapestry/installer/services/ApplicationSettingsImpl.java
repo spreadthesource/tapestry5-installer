@@ -101,6 +101,12 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
     }
 
     @Override
+    public boolean containsKey(String key)
+    {
+        return this.properties.containsKey(key);
+    }
+
+    @Override
     public String valueForSymbol(String symbolName)
     {
         return this.get(symbolName);
