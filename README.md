@@ -8,7 +8,9 @@ will be started and the user will be redirected to '/'
 
 To use this contribution, first refer to the Maven dependency chapter to retrieve the JAR files.
 
-Once your pom.xml is configured you can start to build your installation application. Let's say we have two packages :
+Once your pom.xml is configured you can start to build your installation application. 
+
+Let's say we have two packages :
 
 * com.wooki: this is the root package of the real application
 * com.wooki.installer: this is the root package of the installation application
@@ -50,12 +52,14 @@ Once your pom.xml is configured you can start to build your installation applica
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-As you can see, the contribution is made of two filters, the first one stop all the request till the application has
-not finished its installation process. The second one simply handles request once the application is configured.
+As you can see, the contribution is made of two filters, the first one stop all the requests till the application has
+not finished its installation process.
+
+The second one simply handles request once the application is configured.
 
 Also their is a new symbol to set for the installation application : 'tapestry.installer-package'
 
-### Create a InstallerModule
+### Create an InstallerModule
 
 The installation application can contain a module that must be called InstallerModule, you must set here the version number
 of your installation application, i.e. 
@@ -111,9 +115,19 @@ For developer who use Spring, simply use the corresponding SpringFilter :
 Also, you can use our TapestryPropertyPlaceholderConfigurer class so once the 'real' application is started, spring configuration
 files will be aware of what has been set by the user.
 
+	<bean id="project-properties"
+		class="com.spreadthesource.tapestry.installer.config.TapestryPropertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders">
+			<value>true</value>
+		</property>
+		<property name="locations">
+			<!-- Additionnal locations -->
+		</property>
+	</bean>
+
 ## FAQ
 
-### What to do once the configuration is finsihed ?
+### What to do once the configuration process is finsihed ?
 
 This is up to the developer to handle the initialization of its services using the ApplicationSettings service to extract symbol values.
 This can be done via an eager loaded service, or a ServletApplicationInitializerFilter.
