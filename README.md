@@ -4,6 +4,8 @@ This contribution aims to provide an easy way for Tapestry developers to include
 the user can provide its production environment configuration values. Once the installation process is finished then the 'real' application 
 will be started and the user will be redirected to '/'
 
+NO SERVER RESTART is needed, the real application startup is simply deferred after the configuration process.
+
 ## How to
 
 To use this contribution, first refer to the Maven dependency chapter to retrieve the JAR files.
@@ -78,12 +80,17 @@ It's easy as injecting the ApplicationSettings service in your page and call 'pu
 	@Inject
     private ApplicationSettings settings;
 
+	@Property
+	private String userSuppliedUrl;
+
     @OnEvent(value = EventConstants.SUCCESS)
     public void addConfiguration()
     {
-        settings.put("hibernate.connection.url", "jdbc:hsqldb:file:/tmp/wookidb/wooki");
+        settings.put("hibernate.connection.url", userSuppliedUrl);
         ...
     }
+    
+where userSuppliedUrl has been build by the installation application or directly supplied in a form by the user.
 
 ### Once all the settings has been set successfully by the user
 
@@ -92,7 +99,7 @@ You can can tell the filter to load your 'real' application by simply returning 
 	@OnEvent(value = EventConstants.SUCCESS)
     public Object addConfiguration()
     {
-        settings.put("hibernate.connection.url", "jdbc:hsqldb:file:/tmp/wookidb/wooki");
+        settings.put("hibernate.connection.url", userSuppliedUrl);
         ...
         return new Restart();
     }
@@ -144,7 +151,7 @@ This can be done via an eager loaded service, or a ServletApplicationInitializer
 
 ### Where the contribution stores the installation related informations ?
 
-Everything is stored in the user.home directory in a configuration called '.<filterName>.cfg' where <filterName> is the name
+Everything is stored in the user.home directory in a configuration called '.xxx.cfg' where xxx is the name
 that you have given to the Tapestry Filter ('wooki' in our case). You can give another name to avoid conflicts by setting 
 InstallerConstants.CONFIGURATION_FILENAME symbol.
 
