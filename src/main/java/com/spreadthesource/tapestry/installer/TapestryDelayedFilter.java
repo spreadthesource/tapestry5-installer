@@ -64,6 +64,8 @@ public class TapestryDelayedFilter implements Filter
      */
     public static final String REGISTRY_CONTEXT_NAME = "org.apache.tapestry5.application-registry";
 
+    private Filter tapestryFilter;
+
     /**
      * Placeholder for Tapestry filter so we do not have to copy/paste original code. Only
      * installation application has been implemented from scratch.
@@ -257,7 +259,9 @@ public class TapestryDelayedFilter implements Filter
     {
         destroy(registry);
 
-        registry.shutdown();
+        if(tapestryFilter != null) {
+            tapestryFilter.destroy();
+        }
 
         config.getServletContext().removeAttribute(REGISTRY_CONTEXT_NAME);
 
@@ -277,8 +281,7 @@ public class TapestryDelayedFilter implements Filter
         // Shutdown current registry.
         this.registry.shutdown();
 
-        // Do original init
-        Filter tapestryFilter = new TapestryFilterPlaceHolder(this);
+        tapestryFilter = new TapestryFilterPlaceHolder(this);
         tapestryFilter.init(this.config);
 
         this.installed = true;
