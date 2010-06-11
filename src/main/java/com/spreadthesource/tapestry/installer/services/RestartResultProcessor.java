@@ -27,7 +27,6 @@ public class RestartResultProcessor implements ComponentEventResultProcessor<Res
         this.response = response;
     }
 
-    @Override
     public void processResultValue(Restart value) throws IOException
     {
         String path = request.getContextPath();

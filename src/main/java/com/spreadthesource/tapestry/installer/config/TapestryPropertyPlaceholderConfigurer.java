@@ -52,7 +52,6 @@ public class TapestryPropertyPlaceholderConfigurer extends PropertyPlaceholderCo
         return super.resolvePlaceholder(placeholder, props, systemPropertiesMode);
     }
 
-    @Override
     public void setServletContext(ServletContext servletContext)
     {
         this.context = servletContext;

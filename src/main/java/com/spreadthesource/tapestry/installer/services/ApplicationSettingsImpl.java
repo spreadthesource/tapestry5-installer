@@ -12,16 +12,11 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Symbol;
 import org.apache.tapestry5.ioc.internal.util.TapestryException;
 import org.apache.tapestry5.ioc.services.RegistryShutdownListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.spreadthesource.tapestry.installer.InstallerConstants;
 
 public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShutdownListener
 {
-
-    private final Logger logger = LoggerFactory.getLogger(ApplicationSettings.class);
-
     private final Properties properties;
 
     private final File config;
@@ -43,7 +38,7 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
         this.properties = new Properties();
 
         File userHome = new File(System.getProperty("user.home"));
-        File propertyFile = new File(System.getProperty("user.home"), "." + configFilename + ".cfg");
+        File propertyFile = new File(System.getProperty("user.home"), "." + configFilename);
         if (!propertyFile.exists())
         {
             if (userHome.canWrite() && userHome.canRead())
@@ -94,25 +89,22 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
 
     }
 
-    @Override
     public String get(String key)
     {
         return this.properties.getProperty(key);
     }
 
-    @Override
+
     public boolean containsKey(String key)
     {
         return this.properties.containsKey(key);
     }
 
-    @Override
     public String valueForSymbol(String symbolName)
     {
         return this.get(symbolName);
     }
 
-    @Override
     public void put(String key, String value)
     {
         this.properties.put(key, value);
@@ -121,7 +113,6 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
     /**
      * The properties will be stored to the disk.
      */
-    @Override
     public void registryDidShutdown()
     {
         FileOutputStream fos = null;
@@ -181,7 +172,7 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
         }
     }
 
-    @Override
+
     public boolean alreadyInstalled()
     {
         return this.alreadyInstalled;
