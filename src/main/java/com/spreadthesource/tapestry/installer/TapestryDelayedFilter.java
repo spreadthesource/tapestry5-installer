@@ -235,7 +235,7 @@ public class TapestryDelayedFilter implements Filter
             {
                 try
                 {
-                    boolean handled = handler.service(httpRequest, (HttpServletResponse) response);
+                    handler.service(httpRequest, (HttpServletResponse) response);
                     return;
                 }
                 finally

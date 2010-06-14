@@ -31,14 +31,19 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
      * @throws FileNotFoundException
      */
     public ApplicationSettingsImpl(
-            @Inject @Symbol(InstallerConstants.CONFIGURATION_FILENAME) String configFilename,
+            @Inject @Symbol(InstallerConstants.CONFIGURATION_FILEPATH) String configFilePath,
             @Inject @Symbol(SymbolConstants.APPLICATION_VERSION) String installerVersion)
             throws IOException
     {
         this.properties = new Properties();
-
-        File userHome = new File(System.getProperty("user.home"));
-        File propertyFile = new File(System.getProperty("user.home"), "." + configFilename);
+        
+        int folderx = configFilePath.lastIndexOf(System.getProperty("file.separator"));
+        String folder = configFilePath.substring(0, folderx);
+        String file = configFilePath.substring(folderx);
+        
+        File userHome = new File(folder);
+        File propertyFile = new File(folder, file);
+        
         if (!propertyFile.exists())
         {
             if (userHome.canWrite() && userHome.canRead())

@@ -149,31 +149,25 @@
 			</plugin>
 		</plugins>
 	</reporting>
-	<repositories>
-		<repository>
-			<id>apache</id>
-			<url>https://repository.apache.org/content/repositories/releases</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
+	<repositories>	
 		<repository>
 			<id>apache-snapshots</id>
-			<url>https://repository.apache.org/content/repositories/snapshots</url>
+			<url>https://repository.apache.org/snapshots</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
-		</repository>
+ 		</repository>
+		
 		<repository>
 			<id>devlab722-repo</id>
-			<url>http://nexus.devlab722.net/nexus/content/repositories/releases			</url>
+			<url>http://nexus.devlab722.net/nexus/content/repositories/releases</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
 		<repository>
 			<id>devlab722-snapshot-repo</id>
-			<url>http://nexus.devlab722.net/nexus/content/repositories/snapshots			</url>
+			<url>http://nexus.devlab722.net/nexus/content/repositories/snapshots</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>

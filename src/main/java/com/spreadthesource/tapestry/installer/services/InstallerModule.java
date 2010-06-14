@@ -30,7 +30,7 @@ public class InstallerModule
      * @throws IOException
      */
     public ApplicationSettings buildApplicationSettings(
-            @Inject @Symbol(InstallerConstants.CONFIGURATION_FILENAME) String configFilename,
+            @Inject @Symbol(InstallerConstants.CONFIGURATION_FILEPATH) String configFilename,
             @Inject @Symbol(InstallerConstants.INSTALLER_VERSION) String installerVersion,
             RegistryShutdownHub shutdownHub) throws IOException
     {
@@ -49,7 +49,7 @@ public class InstallerModule
     public void contributeFactoryDefaults(MappedConfiguration<String, String> configuration,
             @Inject @Symbol(InternalSymbols.APP_NAME) String appName)
     {
-        configuration.add(InstallerConstants.CONFIGURATION_FILENAME, appName);
+        configuration.add(InstallerConstants.CONFIGURATION_FILEPATH, appName);
     }
 
     /**

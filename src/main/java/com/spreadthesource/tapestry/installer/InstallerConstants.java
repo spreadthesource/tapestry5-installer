@@ -17,6 +17,6 @@ public abstract class InstallerConstants
     /**
      * Use to set the configuration filename
      */
-    public static final String CONFIGURATION_FILENAME = "sps.installer-filename";
+    public static final String CONFIGURATION_FILEPATH = "sps.installer-filename";
     
 }
