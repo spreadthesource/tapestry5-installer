@@ -37,16 +37,21 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
     {
         this.properties = new Properties();
         
+       
         int folderx = configFilePath.lastIndexOf(System.getProperty("file.separator"));
-        String folder = configFilePath.substring(0, folderx);
-        String file = configFilePath.substring(folderx);
         
-        File userHome = new File(folder);
-        File propertyFile = new File(folder, file);
+        if (folderx < 0) 
+            throw new RuntimeException("File path must at least contains one file separator : " + System.getProperty("file.separator"));
+        
+        String folderPath = configFilePath.substring(0, folderx);
+        String fileName = configFilePath.substring(folderx + 1);
+        
+        File folder = new File(folderPath);
+        File propertyFile = new File(folderPath, fileName);
         
         if (!propertyFile.exists())
         {
-            if (userHome.canWrite() && userHome.canRead())
+            if (folder.canWrite() && folder.canRead())
             {
                 this.config = propertyFile;
                 this.properties.put(InstallerConstants.INSTALLER_VERSION, installerVersion);
@@ -54,8 +59,8 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
             }
             else
             {
-                throw new IOException("Cannot write nor read the wooki configuration in "
-                        + System.getProperty("user.home"));
+                throw new IOException("Cannot write nor read the configuration in "
+                        + folder);
             }
         }
         else
@@ -87,7 +92,7 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
                 throw new IllegalStateException(
                         String
                                 .format(
-                                        "Cannot find installer version, Wooki configuration file '%s' is maybe corrupt.",
+                                        "Cannot find installer version, configuration file '%s' is maybe corrupt.",
                                         this.config.getPath()));
             }
         }
@@ -172,8 +177,8 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
         }
         else
         {
-            throw new FileNotFoundException("Cannot write nor read the wooki configuration in "
-                    + System.getProperty("user.home"));
+            throw new FileNotFoundException("Cannot write nor read the configuration in "
+                    + this.config.getAbsolutePath());
         }
     }
 
