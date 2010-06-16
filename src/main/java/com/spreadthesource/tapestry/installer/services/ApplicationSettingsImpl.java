@@ -117,6 +117,8 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
 
     public void put(String key, String value)
     {
+        if (value == null)
+            value = "";
         this.properties.put(key, value);
     }
 
