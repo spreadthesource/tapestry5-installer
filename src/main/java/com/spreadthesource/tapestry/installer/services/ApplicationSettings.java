@@ -41,6 +41,6 @@ public interface ApplicationSettings extends SymbolProvider
      * 
      * @return
      */
-    boolean alreadyInstalled();
+    boolean isAlreadyInstalled();
 
 }

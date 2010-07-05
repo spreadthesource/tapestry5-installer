@@ -3,7 +3,7 @@ package com.spreadthesource.tapestry.installer.services;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -101,25 +101,26 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
 
     public String get(String key)
     {
-        return this.properties.getProperty(key);
+        return properties.getProperty(key);
     }
 
 
     public boolean containsKey(String key)
     {
-        return this.properties.containsKey(key);
+        return properties.containsKey(key);
     }
 
     public String valueForSymbol(String symbolName)
     {
-        return this.get(symbolName);
+        return get(symbolName);
     }
 
     public void put(String key, String value)
     {
         if (value == null)
             value = "";
-        this.properties.put(key, value);
+        
+        properties.put(key, value);
     }
 
     /**
@@ -127,11 +128,11 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
      */
     public void registryDidShutdown()
     {
-        FileOutputStream fos = null;
+        FileWriter fos = null;
         try
         {
-            fos = new FileOutputStream(this.config);
-            this.properties.store(fos, null);
+            fos = new FileWriter(config);
+            properties.store(fos, null);
         }
         catch (Exception e)
         {
@@ -162,12 +163,12 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
      */
     private void load() throws FileNotFoundException, IOException
     {
-        if (this.config.canWrite() && this.config.canRead())
+        if (config.canWrite() && config.canRead())
         {
-            FileInputStream fis = new FileInputStream(this.config);
+            FileInputStream fis = new FileInputStream(config);
             try
             {
-                this.properties.load(fis);
+                properties.load(fis);
             }
             finally
             {
@@ -180,14 +181,14 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
         else
         {
             throw new FileNotFoundException("Cannot write nor read the configuration in "
-                    + this.config.getAbsolutePath());
+                    + config.getAbsolutePath());
         }
     }
 
 
-    public boolean alreadyInstalled()
+    public boolean isAlreadyInstalled()
     {
-        return this.alreadyInstalled;
+        return alreadyInstalled;
     }
 
 }

@@ -18,5 +18,14 @@ public abstract class InstallerConstants
      * Use to set the configuration filename
      */
     public static final String CONFIGURATION_FILEPATH = "sps.installer-filename";
-    
+
+    /**
+     * Use to set the configuration filename
+     */
+    public static final String SILENT_MODE = "sps.installer-silent-mode";
+
+    /**
+     * Use to set the final page name
+     */
+    public static final String TERMINATOR_PAGE = "sps.terminator-page";
 }
