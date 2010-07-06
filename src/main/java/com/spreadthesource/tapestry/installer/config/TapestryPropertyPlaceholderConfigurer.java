@@ -38,7 +38,7 @@ public class TapestryPropertyPlaceholderConfigurer extends PropertyPlaceholderCo
             }
         }
 
-        // Check if the settings exist
+        // Check if settings exist
         if (settings != null)
         {
             if (this.settings.containsKey(placeholder))

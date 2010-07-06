@@ -39,18 +39,18 @@ public class TapestryTerminatorFilter implements Filter
     {
 
         // Lazy init registry
-        if (this.registry == null)
+        if (registry == null)
         {
-            this.registry = (Registry) this.context
+            registry = (Registry) context
                     .getAttribute(TapestryDelayedFilter.REGISTRY_CONTEXT_NAME);
-            if (this.registry != null)
+            if (registry != null)
             {
-                this.handler = this.registry.getService(HttpServletRequestHandler.class);
+                handler = registry.getService(HttpServletRequestHandler.class);
             }
         }
 
         // Check if tapestry handler exists
-        if (this.handler == null)
+        if (handler == null)
         {
             chain.doFilter(request, response);
             return;
@@ -73,7 +73,7 @@ public class TapestryTerminatorFilter implements Filter
 
     public void init(FilterConfig config) throws ServletException
     {
-        this.context = config.getServletContext();
+        context = config.getServletContext();
     }
 
 }

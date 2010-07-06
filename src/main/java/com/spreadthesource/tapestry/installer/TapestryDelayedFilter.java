@@ -24,6 +24,7 @@ import org.apache.tapestry5.ioc.def.ModuleDef;
 import org.apache.tapestry5.ioc.internal.services.MapSymbolProvider;
 import org.apache.tapestry5.ioc.internal.util.OneShotLock;
 import org.apache.tapestry5.ioc.services.SymbolProvider;
+import org.apache.tapestry5.ioc.services.SymbolSource;
 import org.apache.tapestry5.services.HttpServletRequestHandler;
 import org.apache.tapestry5.services.ServletApplicationInitializer;
 import org.slf4j.Logger;
@@ -69,8 +70,6 @@ public class TapestryDelayedFilter implements Filter
     /**
      * Placeholder for Tapestry filter so we do not have to copy/paste original code. Only
      * installation application has been implemented from scratch.
-     * 
-     * @author ccordenier
      */
     static class TapestryFilterPlaceHolder extends TapestryFilter
     {
@@ -109,21 +108,6 @@ public class TapestryDelayedFilter implements Filter
      */
     public final void init(FilterConfig filterConfig) throws ServletException
     {
-        
-        config = filterConfig;
-        
-        // By pass init if not in production mode
-        String productionMode = filterConfig.getServletContext().getInitParameter(
-                SymbolConstants.PRODUCTION_MODE);
-        if (productionMode != null)
-        {
-            if (!Boolean.parseBoolean(productionMode))
-            {
-                this.start();
-                return;
-            }
-        }
-
         // Init installation application
         config = filterConfig;
 
@@ -159,7 +143,6 @@ public class TapestryDelayedFilter implements Filter
         }
         catch (ClassNotFoundException ex)
         {
-            ex.printStackTrace();
             // That's OK, not all applications will have a module class, even though any
             // non-trivial application will.
         }
@@ -180,18 +163,33 @@ public class TapestryDelayedFilter implements Filter
 
         init(registry);
 
-        // If already installed, automatically start the 'real' application
+        // 3 possibles cases
+        // - application is already installed, then we start it directly
+        // - application is not installed, but silent install is true, then we run all
+        // configurations tasks and start the application
+        // - application is not installed and we want normal install process, then we simply let
+        // user go to thefirst configuration task start page
+
+        // if already installed, automatically start the 'real' application
         ApplicationSettings settings = registry.getService(ApplicationSettings.class);
         System.setProperty(InstallerConstants.INSTALLER_VERSION, settings
                 .get(InstallerConstants.INSTALLER_VERSION));
-        if (settings.alreadyInstalled())
+        
+        if (settings.isAlreadyInstalled())
         {
             this.installed = true;
-            this.start();
+            this.start();            
         }
         else
         {
             appInitializer.announceStartup();
+            
+            SymbolSource symbolSource = registry.getService(SymbolSource.class);
+            boolean silent = Boolean.parseBoolean(symbolSource.valueForSymbol(InstallerConstants.SILENT_MODE));
+            
+            if (silent) {
+                this.start();
+            }
         }
     }
 
@@ -294,7 +292,7 @@ public class TapestryDelayedFilter implements Filter
         tapestryFilter = new TapestryFilterPlaceHolder(this);
         tapestryFilter.init(config);
 
-        installed = true;
+        this.installed = true;
     }
 
     /**
