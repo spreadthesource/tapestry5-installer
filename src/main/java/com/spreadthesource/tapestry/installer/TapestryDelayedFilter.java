@@ -109,8 +109,12 @@ public class TapestryDelayedFilter implements Filter
      */
     public final void init(FilterConfig filterConfig) throws ServletException
     {
+        
+        config = filterConfig;
+        
         // By pass init if not in production mode
-        String productionMode = filterConfig.getInitParameter(SymbolConstants.PRODUCTION_MODE);
+        String productionMode = filterConfig.getServletContext().getInitParameter(
+                SymbolConstants.PRODUCTION_MODE);
         if (productionMode != null)
         {
             if (!Boolean.parseBoolean(productionMode))
@@ -155,6 +159,7 @@ public class TapestryDelayedFilter implements Filter
         }
         catch (ClassNotFoundException ex)
         {
+            ex.printStackTrace();
             // That's OK, not all applications will have a module class, even though any
             // non-trivial application will.
         }
@@ -225,7 +230,8 @@ public class TapestryDelayedFilter implements Filter
         if (!installed)
         {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
-            if (httpRequest.getServletPath().equals(com.spreadthesource.tapestry.installer.InternalConstants.RESTART_URI))
+            if (httpRequest.getServletPath().equals(
+                    com.spreadthesource.tapestry.installer.InternalConstants.RESTART_URI))
             {
                 this.start();
                 // Redirect to root path after restart
@@ -259,7 +265,8 @@ public class TapestryDelayedFilter implements Filter
     {
         destroy(registry);
 
-        if(tapestryFilter != null) {
+        if (tapestryFilter != null)
+        {
             tapestryFilter.destroy();
         }
 
@@ -279,12 +286,15 @@ public class TapestryDelayedFilter implements Filter
         lock.lock();
 
         // Shutdown current registry.
-        this.registry.shutdown();
+        if (registry != null)
+        {
+            registry.shutdown();
+        }
 
         tapestryFilter = new TapestryFilterPlaceHolder(this);
-        tapestryFilter.init(this.config);
+        tapestryFilter.init(config);
 
-        this.installed = true;
+        installed = true;
     }
 
     /**
