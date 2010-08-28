@@ -37,21 +37,15 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
     {
         this.properties = new Properties();
         
-       
-        int folderx = configFilePath.lastIndexOf(System.getProperty("file.separator"));
+        File propertyFile = new File(configFilePath);
         
-        if (folderx < 0) 
-            throw new RuntimeException("File path must at least contains one file separator : " + System.getProperty("file.separator"));
-        
-        String folderPath = configFilePath.substring(0, folderx);
-        String fileName = configFilePath.substring(folderx + 1);
-        
-        File folder = new File(folderPath);
-        File propertyFile = new File(folderPath, fileName);
+        if(propertyFile.getParentFile() == null) {
+            throw new IllegalArgumentException("Configuration path should not be created in root folder !");
+        }
         
         if (!propertyFile.exists())
         {
-            if (folder.canWrite() && folder.canRead())
+            if (propertyFile.getParentFile().canWrite() && propertyFile.getParentFile().canRead())
             {
                 this.config = propertyFile;
                 this.properties.put(InstallerConstants.INSTALLER_VERSION, installerVersion);
@@ -60,7 +54,7 @@ public class ApplicationSettingsImpl implements ApplicationSettings, RegistryShu
             else
             {
                 throw new IOException("Cannot write nor read the configuration in "
-                        + folder);
+                        + propertyFile.getParentFile());
             }
         }
         else
