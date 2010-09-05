@@ -25,10 +25,11 @@ public class InstallerCoreModule
         shutdownHub.addRegistryShutdownListener(settings);
         return settings;
     }
-    
+
     public void contributeFactoryDefaults(MappedConfiguration<String, String> configuration,
             @Inject @Symbol(InternalSymbols.APP_NAME) String appName)
     {
         configuration.add(InstallerConstants.CONFIGURATION_FILEPATH, appName);
     }
+
 }

@@ -14,7 +14,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.TapestryFilter;
 import org.apache.tapestry5.internal.InternalConstants;
 import org.apache.tapestry5.internal.ServletContextSymbolProvider;

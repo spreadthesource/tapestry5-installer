@@ -200,6 +200,6 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<properties>
-		<tapestry-release-version>5.2.0-SNAPSHOT</tapestry-release-version>
+		<tapestry-release-version>5.2.1-SNAPSHOT</tapestry-release-version>
 	</properties>
 </project>
